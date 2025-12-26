@@ -24,7 +24,7 @@ export const generateMatchExplanation = async (
     return response.text || "Could not generate explanation.";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "AI analysis currently unavailable.";
+    return "Smart analysis currently unavailable.";
   }
 };
 

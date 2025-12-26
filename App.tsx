@@ -64,7 +64,7 @@ const App: React.FC = () => {
           return (
             <div className="flex flex-col h-full bg-white p-6 justify-center">
                 <div className="mb-10 text-center">
-                    <h1 className="text-3xl font-extrabold text-emerald-600 mb-2">JobMatch AI</h1>
+                    <h1 className="text-3xl font-extrabold text-emerald-600 mb-2">Hire App</h1>
                     <p className="text-slate-500">Find your perfect match in seconds.</p>
                 </div>
                 

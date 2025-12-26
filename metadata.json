@@ -1,6 +1,6 @@
 {
-  "name": "JobMatch AI",
-  "description": "An app-first hiring platform using AI to match blue-collar workers with employers via a chat-based interface.",
+  "name": "Hire App",
+  "description": "An app-first hiring platform using Smart technology to match blue-collar workers with employers via a chat-based interface.",
   "requestFramePermissions": [
     "camera",
     "microphone",

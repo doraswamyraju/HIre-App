@@ -173,7 +173,7 @@ const JobDetail: React.FC<{ job: Job; currentUser: User; onBack: () => void }> =
                          <section className="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-xl border border-indigo-100">
                             <div className="flex items-center justify-between mb-2">
                                 <h3 className="font-bold text-indigo-900 flex items-center gap-2">
-                                    <IconSparkles className="w-4 h-4 text-indigo-500"/> AI Match Analysis
+                                    <IconSparkles className="w-4 h-4 text-indigo-500"/> Smart Match Analysis
                                 </h3>
                                 {!explanation && (
                                     <button 

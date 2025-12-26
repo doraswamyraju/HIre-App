@@ -331,7 +331,7 @@ const ChatInterface: React.FC<{ application: Application; currentUser: User; onB
                     onClick={() => setInput(suggestion)}
                     className="flex-shrink-0 bg-white border border-emerald-200 text-emerald-700 text-xs px-3 py-1.5 rounded-full shadow-sm whitespace-nowrap active:scale-95 transition-transform"
                 >
-                    ✨ AI Suggestion: {suggestion}
+                    ✨ Smart Suggestion: {suggestion}
                 </button>
             </div>
         )}

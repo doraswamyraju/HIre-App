@@ -25,7 +25,7 @@ const ProfilesTab: React.FC<ProfilesTabProps> = ({ currentUser }) => {
                 id: `p${Date.now()}`,
                 userId: currentUser.id,
                 roleTitle: newProfileData.roleTitle || 'New Profile',
-                summary: newProfileData.summary || 'AI Generated Summary',
+                summary: newProfileData.summary || 'Smart Generated Summary',
                 experienceYears: newProfileData.experienceYears || 0,
                 skills: newProfileData.skills || [],
                 location: currentUser.location || 'Unknown',
