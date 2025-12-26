@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { createRoot } from 'react-dom/client';
+// --- 1. SETUP: Destructure what we need from the global React object ---
+const { useState } = React;
+const { createRoot } = ReactDOM;
 
-// --- MOCKS & PLACEHOLDERS (To make the code run without external files) ---
-
-// Mock Data
+// --- 2. MOCKS (Icons & Data) ---
 const CURRENT_USER_EMPLOYEE = { name: "John Doe", role: "EMPLOYEE" };
 const CURRENT_USER_EMPLOYER = { name: "Jane Smith", role: "EMPLOYER" };
 const UserRole = { EMPLOYEE: 'EMPLOYEE', EMPLOYER: 'EMPLOYER' };
 
-// Mock Icons
 const IconUsers = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -20,7 +18,8 @@ const IconBriefcase = ({ className }) => (
   </svg>
 );
 
-// Mock Layout Component
+// --- 3. COMPONENTS ---
+
 const Layout = ({ children, activeTab, onTabChange, role }) => (
   <div className="flex flex-col h-full">
     <header className="bg-white border-b p-4 flex justify-between items-center shadow-sm">
@@ -43,7 +42,6 @@ const Layout = ({ children, activeTab, onTabChange, role }) => (
   </div>
 );
 
-// Mock Tab Views
 const JobsTab = ({ currentUser }) => <div className="p-4 text-center text-slate-500">Jobs Tab Content (Placeholder)</div>;
 const ApplicationsTab = ({ currentUser }) => <div className="p-4 text-center text-slate-500">Applications Tab Content (Placeholder)</div>;
 const ProfilesTab = ({ currentUser }) => <div className="p-4 text-center text-slate-500">Profiles Tab Content (Placeholder)</div>;
@@ -55,15 +53,11 @@ const SettingsTab = ({ currentUser, onLogout }) => (
   </div>
 );
 
-
-// --- MAIN APP COMPONENT (Your Logic) ---
-
 const App = () => {
   const [activeTab, setActiveTab] = useState('jobs');
   const [currentRole, setCurrentRole] = useState(UserRole.EMPLOYEE);
   const [authStage, setAuthStage] = useState('ROLE_SELECTION');
   
-  // Auth state for login form
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -76,7 +70,6 @@ const App = () => {
 
   const handleLogin = (e) => {
       e.preventDefault();
-      // In a real app, validate credentials here
       setAuthStage('APP');
   };
 
@@ -89,18 +82,12 @@ const App = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'connect':
-        return <ConnectTab />;
-      case 'profiles':
-        return <ProfilesTab currentUser={currentUser} />;
-      case 'applications':
-        return <ApplicationsTab currentUser={currentUser} />;
-      case 'jobs':
-        return <JobsTab currentUser={currentUser} />;
-      case 'settings':
-        return <SettingsTab currentUser={currentUser} onLogout={handleLogout} />;
-      default:
-        return <JobsTab currentUser={currentUser} />;
+      case 'connect': return <ConnectTab />;
+      case 'profiles': return <ProfilesTab currentUser={currentUser} />;
+      case 'applications': return <ApplicationsTab currentUser={currentUser} />;
+      case 'jobs': return <JobsTab currentUser={currentUser} />;
+      case 'settings': return <SettingsTab currentUser={currentUser} onLogout={handleLogout} />;
+      default: return <JobsTab currentUser={currentUser} />;
     }
   };
 
@@ -112,7 +99,6 @@ const App = () => {
                     <h1 className="text-3xl font-extrabold text-emerald-600 mb-2">Hire App</h1>
                     <p className="text-slate-500">Find your perfect match in seconds.</p>
                 </div>
-                
                 <div className="space-y-4">
                     <button 
                         onClick={() => handleRoleSelect(UserRole.EMPLOYEE)}
@@ -129,7 +115,6 @@ const App = () => {
                             </div>
                         </div>
                     </button>
-
                     <button 
                         onClick={() => handleRoleSelect(UserRole.EMPLOYER)}
                         className="w-full p-6 border-2 border-slate-100 rounded-2xl hover:border-blue-500 hover:bg-blue-50 transition-all group text-left relative overflow-hidden"
@@ -157,12 +142,10 @@ const App = () => {
                  <button onClick={() => setAuthStage('ROLE_SELECTION')} className="absolute top-6 left-6 text-slate-400 hover:text-slate-600">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                  </button>
-
                  <div className="mb-8">
                      <h2 className="text-2xl font-bold text-slate-900 mb-1">Welcome Back!</h2>
                      <p className="text-slate-500 text-sm">Login as {isEmployee ? 'Job Seeker' : 'Employer'}</p>
                  </div>
-
                  <form onSubmit={handleLogin} className="space-y-4">
                      <div>
                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Email or Phone</label>
@@ -186,7 +169,6 @@ const App = () => {
                             placeholder="••••••••"
                           />
                      </div>
-                     
                      <div className="pt-4">
                         <button 
                             type="submit"
@@ -196,10 +178,6 @@ const App = () => {
                         </button>
                      </div>
                  </form>
-                 
-                 <p className="mt-6 text-center text-xs text-slate-400">
-                     Don't have an account? <span className="text-emerald-600 font-bold cursor-pointer">Sign Up</span>
-                 </p>
             </div>
           );
       }
@@ -208,16 +186,11 @@ const App = () => {
 
   return (
     <div className="h-full flex flex-col items-center justify-center bg-slate-200">
-       {/* Mobile Container */}
        <div className="w-full h-full md:h-[800px] md:w-[400px] bg-white md:rounded-3xl md:shadow-2xl overflow-hidden relative">
           {authStage !== 'APP' ? (
               renderAuthScreens()
           ) : (
-            <Layout 
-                activeTab={activeTab} 
-                onTabChange={setActiveTab}
-                role={currentRole}
-            >
+            <Layout activeTab={activeTab} onTabChange={setActiveTab} role={currentRole}>
                 {renderContent()}
             </Layout>
           )}
@@ -226,6 +199,6 @@ const App = () => {
   );
 };
 
-// --- MOUNT THE APP ---
+// --- 4. RENDER ---
 const root = createRoot(document.getElementById('root'));
 root.render(<App />);
