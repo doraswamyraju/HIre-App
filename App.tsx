@@ -1,22 +1,67 @@
 import React, { useState } from 'react';
-import Layout from './components/Layout';
-import { UserRole } from './types';
-import { CURRENT_USER_EMPLOYEE, CURRENT_USER_EMPLOYER } from './services/mockData';
-import { IconBriefcase, IconUsers } from './components/Icons';
+import { createRoot } from 'react-dom/client';
 
-// Views
-import ApplicationsTab from './views/ApplicationsTab';
-import JobsTab from './views/JobsTab';
-import ProfilesTab from './views/ProfilesTab';
-import ConnectTab from './views/ConnectTab';
-import SettingsTab from './views/SettingsTab';
+// --- MOCKS & PLACEHOLDERS (To make the code run without external files) ---
 
-type AuthStage = 'ROLE_SELECTION' | 'LOGIN' | 'APP';
+// Mock Data
+const CURRENT_USER_EMPLOYEE = { name: "John Doe", role: "EMPLOYEE" };
+const CURRENT_USER_EMPLOYER = { name: "Jane Smith", role: "EMPLOYER" };
+const UserRole = { EMPLOYEE: 'EMPLOYEE', EMPLOYER: 'EMPLOYER' };
 
-const App: React.FC = () => {
+// Mock Icons
+const IconUsers = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+  </svg>
+);
+const IconBriefcase = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+  </svg>
+);
+
+// Mock Layout Component
+const Layout = ({ children, activeTab, onTabChange, role }) => (
+  <div className="flex flex-col h-full">
+    <header className="bg-white border-b p-4 flex justify-between items-center shadow-sm">
+      <h1 className="font-bold text-emerald-600">Hire App Dashboard</h1>
+      <div className="flex gap-2">
+        {['jobs', 'applications', 'profiles', 'settings'].map(tab => (
+           <button 
+             key={tab}
+             onClick={() => onTabChange(tab)}
+             className={`px-3 py-1 rounded text-sm capitalize ${activeTab === tab ? 'bg-emerald-100 text-emerald-700 font-bold' : 'text-slate-500'}`}
+           >
+             {tab}
+           </button>
+        ))}
+      </div>
+    </header>
+    <main className="flex-1 overflow-auto bg-slate-50 p-4 relative">
+      {children}
+    </main>
+  </div>
+);
+
+// Mock Tab Views
+const JobsTab = ({ currentUser }) => <div className="p-4 text-center text-slate-500">Jobs Tab Content (Placeholder)</div>;
+const ApplicationsTab = ({ currentUser }) => <div className="p-4 text-center text-slate-500">Applications Tab Content (Placeholder)</div>;
+const ProfilesTab = ({ currentUser }) => <div className="p-4 text-center text-slate-500">Profiles Tab Content (Placeholder)</div>;
+const ConnectTab = () => <div className="p-4 text-center text-slate-500">Connect Tab Content (Placeholder)</div>;
+const SettingsTab = ({ currentUser, onLogout }) => (
+  <div className="p-8 text-center">
+    <h2 className="text-xl font-bold mb-4">Settings</h2>
+    <button onClick={onLogout} className="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 font-medium">Log Out</button>
+  </div>
+);
+
+
+// --- MAIN APP COMPONENT (Your Logic) ---
+
+const App = () => {
   const [activeTab, setActiveTab] = useState('jobs');
-  const [currentRole, setCurrentRole] = useState<UserRole>(UserRole.EMPLOYEE);
-  const [authStage, setAuthStage] = useState<AuthStage>('ROLE_SELECTION');
+  const [currentRole, setCurrentRole] = useState(UserRole.EMPLOYEE);
+  const [authStage, setAuthStage] = useState('ROLE_SELECTION');
   
   // Auth state for login form
   const [email, setEmail] = useState('');
@@ -24,12 +69,12 @@ const App: React.FC = () => {
 
   const currentUser = currentRole === UserRole.EMPLOYEE ? CURRENT_USER_EMPLOYEE : CURRENT_USER_EMPLOYER;
 
-  const handleRoleSelect = (role: UserRole) => {
+  const handleRoleSelect = (role) => {
       setCurrentRole(role);
       setAuthStage('LOGIN');
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e) => {
       e.preventDefault();
       // In a real app, validate credentials here
       setAuthStage('APP');
@@ -108,7 +153,7 @@ const App: React.FC = () => {
       if (authStage === 'LOGIN') {
           const isEmployee = currentRole === UserRole.EMPLOYEE;
           return (
-            <div className="flex flex-col h-full bg-white p-8 justify-center">
+            <div className="flex flex-col h-full bg-white p-8 justify-center relative">
                  <button onClick={() => setAuthStage('ROLE_SELECTION')} className="absolute top-6 left-6 text-slate-400 hover:text-slate-600">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                  </button>
@@ -128,7 +173,7 @@ const App: React.FC = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                             placeholder="user@example.com"
-                         />
+                          />
                      </div>
                      <div>
                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Password</label>
@@ -139,7 +184,7 @@ const App: React.FC = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                             placeholder="••••••••"
-                         />
+                          />
                      </div>
                      
                      <div className="pt-4">
@@ -163,7 +208,6 @@ const App: React.FC = () => {
 
   return (
     <div className="h-full flex flex-col items-center justify-center bg-slate-200">
-       
        {/* Mobile Container */}
        <div className="w-full h-full md:h-[800px] md:w-[400px] bg-white md:rounded-3xl md:shadow-2xl overflow-hidden relative">
           {authStage !== 'APP' ? (
@@ -182,4 +226,6 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+// --- MOUNT THE APP ---
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);
